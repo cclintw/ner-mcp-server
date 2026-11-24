@@ -1,0 +1,20 @@
+{
+  "name": "local-ner",
+  "interface": {
+    "displayName": "Local NER"
+  },
+  "plugins": [
+    {
+      "name": "local-ner-mcp-server",
+      "source": {
+        "source": "local",
+        "path": "./plugins/local-ner-mcp-server"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

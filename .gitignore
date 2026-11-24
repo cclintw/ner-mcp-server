@@ -1,0 +1,18 @@
+# Python 環境與快取
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# 本機設定與系統檔案
+.env
+.env.local
+.DS_Store
+
+# 本機參照表與匯出檔案
+reference_sets/
+red-chamber-dream.json
+luoyang-qielan-ji.json
+cbdb.json
+/exports/

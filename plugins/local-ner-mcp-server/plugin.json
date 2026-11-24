@@ -1,0 +1,18 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "local-ner-mcp-server",
+  "version": "0.1.0",
+  "description": "將來源檔案整理成標註參考 JSON，並透過本機 MCP 提供詞表查詢。",
+  "extensions": {
+    "com.openai": {
+      "requires_local_executor": true,
+      "interface": {
+        "displayName": "Local NER MCP Server",
+        "shortDescription": "整理標註參考詞表，供本機 MCP 查詢與比對。",
+        "category": "Productivity",
+        "logo": "./assets/icon.png",
+        "composerIcon": "./assets/icon.png"
+      }
+    }
+  }
+}
