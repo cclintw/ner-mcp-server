@@ -9,6 +9,7 @@ import tempfile
 from collections import defaultdict
 from functools import lru_cache
 from pathlib import Path
+from urllib.parse import urlsplit
 
 DEFAULT_DATA_DIR = Path.home() / ".codex" / "local-ner-mcp-server" / "reference_sets"
 REFERENCE_ID = re.compile(r"[a-z0-9][a-z0-9-]{0,79}")
@@ -32,6 +33,22 @@ def records(document, field):
     if not isinstance(entries, list) or any(not isinstance(entry, dict) for entry in entries):
         raise ValueError(f"{field} 須為物件陣列")
     return entries
+
+
+def validate_source_refs(entity, entity_id):
+    for source_ref in records(entity, "source_refs"):
+        for field in ("source", "source_id", "url"):
+            if not isinstance(source_ref.get(field), str):
+                raise ValueError(f"實體 {entity_id} 的 source_refs.{field} 須為字串，可填空字串")
+        url = source_ref["url"]
+        if url:
+            try:
+                parsed = urlsplit(url)
+                valid = parsed.scheme in ("http", "https") and parsed.hostname
+            except ValueError:
+                valid = False
+            if not valid or any(character.isspace() for character in url):
+                raise ValueError(f"實體 {entity_id} 的 source_refs.url 須為 HTTP 或 HTTPS 網址")
 
 
 def load_json(path):
@@ -58,6 +75,8 @@ def load_json(path):
             not isinstance(alias, str) or not alias.strip() for alias in aliases
         ):
             raise ValueError(f"實體 {entity_id} 的 aliases 須為非空字串的陣列")
+        if "source_refs" in entity:
+            validate_source_refs(entity, entity_id)
         if "location" in entity:
             location = entity["location"]
             if entity_type != "place" or not isinstance(location, dict):

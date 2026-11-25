@@ -35,10 +35,22 @@ The installation commands require access to `codex`. The plugin requires Python 
 ## Create an annotation reference set
 
 1. Open a new local Codex chat and attach readable files that contain identifiable entities. Sources can include CSV, TSV, JSON, GeoJSON, SQLite, text documents, and JPG or PNG images such as character lists and family trees.
-2. Type `$` and select **Local NER MCP Server**, or use `$local-ner-mcp-server:local-ner-mcp-server`. Give the reference set a name, such as “Taiwan Place Names.”
+2. Type `$` and select **Local NER MCP Server**, or use `$local-ner-mcp-server:local-ner-mcp-server`. Specify a name for the reference set.
 3. Open the resulting JSON file. The Skill extracts and validates the entities and relationships it can identify and reports any parts of the sources it could not interpret reliably.
 
+For example, to create a reference set for *Dream of the Red Chamber* (《紅樓夢》), attach a character list, a table of aliases, and a character relationship chart. Then enter a prompt like this.
+
+> Use the attached character list, alias table, and relationship chart for *Dream of the Red Chamber*. Extract character names, aliases, and relationships supported by the files, and save them in a reference set named “紅樓夢標註詞表”.
+
 Each reference set is saved as a JSON file in `~/.codex/local-ner-mcp-server/reference_sets/` by default. The same MCP server can read newly saved sets. See the [reference format](plugins/local-ner-mcp-server/skills/local-ner-mcp-server/references/reference-format.md) for field definitions.
+
+## List available annotation reference sets
+
+In a local Codex chat with **Local NER MCP Server** available, ask for the list in English or Traditional Chinese. No source file is needed.
+
+> List the annotation reference sets available from Local NER MCP Server.
+
+> 請列出 Local NER MCP Server 目前可用的標註詞表。
 
 ## Use a reference set in another project
 
@@ -46,21 +58,13 @@ Open the local Codex project where you want to annotate text and attach the orig
 
 ### Use a reference set by name
 
-> Use the “紅樓夢” reference set from Local NER MCP Server to annotate character names in the attached text.
-
-### List the reference sets before choosing
-
-> List the annotation reference sets available from Local NER MCP Server and wait for me to choose one before annotating the text.
-
-Once Codex shows the list, reply with the name of the set you want to use.
-
-> Use the “Taiwan Place Names” reference set to annotate place names in the attached text.
+> Use the “紅樓夢標註詞表” reference set from Local NER MCP Server to annotate character names in the attached text.
 
 ## Project layout
 
 - [.agents/plugins/marketplace.json](.agents/plugins/marketplace.json) declares the local marketplace entry.
 - [plugin.json](plugins/local-ner-mcp-server/plugin.json) and [mcp.json](plugins/local-ner-mcp-server/mcp.json) define the plugin and its STDIO launcher.
-- [SKILL.md](plugins/local-ner-mcp-server/skills/local-ner-mcp-server/SKILL.md) defines the file-to-JSON workflow.
+- [SKILL.md](plugins/local-ner-mcp-server/skills/local-ner-mcp-server/SKILL.md) defines how to list reference sets and create them from source files.
 - [launch.py](plugins/local-ner-mcp-server/skills/local-ner-mcp-server/scripts/launch.py) prepares the runtime and starts the server.
 
 Keep generated or user-provided reference sets in the local reference set directory. The repository excludes `reference_sets/` and known local dataset filenames.
